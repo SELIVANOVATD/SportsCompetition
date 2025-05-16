@@ -1,0 +1,112 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:SportsCompetition.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        x:Name="mainWindow"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+        x:Class="SportsCompetition.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Sports Competition Simulator">
+
+    <Grid ColumnDefinitions="300,*" RowDefinitions="Auto,*,Auto">
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Margin="10" Spacing="10">
+            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="5">
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Athletes" FontWeight="Bold"/>
+                    <TextBox Watermark="Athlete Name" Text="{Binding NewAthleteName}"/>
+                    <Button Content="Add Athlete" Command="{Binding AddAthleteCommand}"/>
+                    <ListBox ItemsSource="{Binding AllAthletes}" Height="150">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+
+            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="5">
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Doctors" FontWeight="Bold"/>
+                    <TextBox Watermark="Doctor Name" Text="{Binding NewDoctorName}"/>
+                    <Button Content="Add Doctor" Command="{Binding AddDoctorCommand}"/>
+                    <ListBox ItemsSource="{Binding Doctors}" Height="100">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+
+            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="5">
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Competitions" FontWeight="Bold"/>
+                    <TextBox Watermark="Competition Name" Text="{Binding NewCompetitionName}"/>
+                    <Button Content="Add Competition" Command="{Binding AddCompetitionCommand}"/>
+                    <ListBox ItemsSource="{Binding Competitions}" Height="150">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
+            <ItemsControl ItemsSource="{Binding Competitions}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Margin="5" Padding="5">
+    <StackPanel Spacing="10">
+        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+    <TextBlock Text="{Binding IsRunning, Converter={StaticResource BoolToStatusConverter}}"/>
+    <TextBlock Text="{Binding Winner, StringFormat='Победитель: {0}'}"/>
+        <Button Content="Start Competition" Click="StartCompetition_Click"/>
+                                <Border BorderBrush="Gray" BorderThickness="1" Height="200">
+                                    <Canvas>
+                                        <ItemsControl ItemsSource="{Binding Athletes}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <Canvas/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Ellipse Width="30" Height="30" Fill="Blue"
+                                                             Canvas.Left="{Binding PositionX}"
+                                                             Canvas.Top="{Binding PositionY}">
+                                                        <ToolTip.Tip>
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding Name}"/>
+                                                                <TextBlock Text="{Binding SkillLevel, StringFormat='Skill: {0}'}"/>
+                                                                <TextBlock Text="{Binding Stamina, StringFormat='Stamina: {0}'}"/>
+                                                                <TextBlock Text="{Binding Wins, StringFormat='Wins: {0}'}"/>
+                                                            </StackPanel>
+                                                        </ToolTip.Tip>
+                                                    </Ellipse>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Canvas>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Grid.Column="1" Grid.Row="2" Margin="5" Padding="5">
+            <StackPanel>
+                <TextBlock Text="Event Log" FontWeight="Bold"/>
+                <Button Content="Clear Logs" Command="{Binding ClearLogsCommand}" HorizontalAlignment="Right"/>
+                <ListBox ItemsSource="{Binding Logs}" Height="150"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
